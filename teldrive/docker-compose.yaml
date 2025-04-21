@@ -1,0 +1,44 @@
+services:
+  teldrive:
+    image: ghcr.io/tgdrive/teldrive
+    restart: always
+    container_name: teldrive
+    environment:
+      - TZ=Asia/Saigon
+    volumes:
+      - /DATA/AppData/teldrive/config.toml:/config.toml
+      - /DATA/AppData/teldrive/storage.db:/storage.db
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+    ports:
+      - 8081:8080
+    networks:
+     - postgres
+  postgres_db:
+    image: ghcr.io/tgdrive/postgres:17-alpine
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=black
+      - POSTGRES_PASSWORD=Abcd1234!
+      - POSTGRES_DB=postgres
+    volumes:
+      - /DATA/AppData/postgres:/var/lib/postgresql/data
+    networks:
+     - postgres      
+  imgproxy:
+    image: darthsim/imgproxy
+    container_name: imgproxy
+    networks:
+     - postgres
+    environment:
+      IMGPROXY_ALLOW_ORIGIN: "*"
+      IMGPROXY_ENFORCE_WEBP: true
+      IMGPROXY_MALLOC: "jemalloc"
+    restart: always
+    ports:
+      - 8080:8080
+networks:
+  postgres:                                 
+    external: true
