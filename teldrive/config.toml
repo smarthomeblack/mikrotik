@@ -1,0 +1,27 @@
+[db]
+data-source = "postgres://black:Abcd1234@postgres/postgres"
+prepare-stmt = false
+
+
+[db.pool]
+enable = false
+
+[jwt]
+secret = "xxxx"
+
+[tg]
+ntp = +7
+app-id = "xxxx"
+app-hash = "xxxx"
+disable-stream-bots = true
+rate-burst = 8
+rate-limit = false
+uploads-threads = 8
+rate = 50
+[tg.stream]
+multi-threads = 8
+buffers = 16
+threaded_streams = true
+
+[tg.uploads]
+encryption-key = ""
